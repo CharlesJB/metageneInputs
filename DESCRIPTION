@@ -1,0 +1,27 @@
+Package: metageneInputs
+Title: Create input files for metagene article.
+Version: 0.0.1
+Authors@R: person("Charles", "Joly Beauparlant",
+    email = "charles.joly-beauparlant@crchul.ulaval.ca", role = c("aut", "cre"))
+Description: The goal of this package is to create the groups of regions for a
+    metagene analysis in GM12878 cell lines in hg19. There are two types of
+    regions: promoters and enhancers. The promoters were created in the
+    metagene package. The enhancers are extracted from Fantom5 using the
+    FantomEnhancers.hg19 package. Both types of regions (promoters and
+    enhancers) are further splitted in groups based on their expression levels.
+    Tresholds values for each groups are calculated by splitting Fantom5's TSS
+    (extracted with the FantomTSS.hg19 package) into quantiles.
+Depends: R (>= 3.2.0)
+License: Artistic-2.0
+LazyData: true
+VignetteBuilder: knitr
+Depends:
+    FantomTSS.hg19
+Imports:
+    FantomEnhancers.hg19,
+    GenomicRanges,
+    GenomeInfoDb,
+    S4Vectors,
+    metagene
+Suggests:
+    knitr
