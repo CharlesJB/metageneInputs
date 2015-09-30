@@ -3,3 +3,5 @@
 .RData
 *.md
 *.html
+*.txt
+*.RData

@@ -1,0 +1,76 @@
+---
+title: "Split regions"
+author: "Charles Joly Beauparlant"
+date: "September 29, 2015"
+output: html_document
+---
+
+```{r devtools, warning=FALSE, message=FALSE}
+# TODO: Replace with library(metageneInputs) when available.
+library(devtools)
+devtools::load_all()
+```
+
+## Introduction
+
+The goal of this vignette is to produce the groups of regions that will be used
+for the metagene paper.
+
+## Regions
+
+To obtain the robust regoins, we need to keep only the regions that overlap
+with the TSS from the `FantomTSS.hg19` package and then extract the mean TPM
+value for each regions.
+
+### Robust enhancer regions
+
+```{r robustEnhancerRegions}
+cell_line <- "GM12878"
+robust_enhancer_regions <- get_robust_enhancers_regions(cell_line,
+                                                        keep_y = FALSE)
+robust_enhancer_regions
+```
+
+### Robust promoter regions
+
+```{r robustPromoterRegions}
+robust_promoter_regions <- get_robust_promoters_regions(cell_line,
+                                                        keep_y = FALSE)
+robust_promoter_regions
+```
+
+## Tresholds
+
+In order to split promoters and enhancers into 5 different groups based on
+their expression level in TPM, we will first calculate tresholds for each
+groups using every TPM values from every non-zero robust TSS TPM of Fantom5
+except those from the `r cell_line`.
+
+```{r tresholds, cache=TRUE}
+fantom_tpm <- get_all_tss_tpm(exclude = cell_line)
+probs <- seq(1.0, 0, -0.25)
+quantiles <- quantile(fantom_tpm[fantom_tpm != 0], probs = probs)
+quantiles
+```
+
+## Split the regions
+
+The enhancers:
+
+```{r splitEnhancers}
+enhancers <- split_by_quantiles(robust_enhancer_regions, quantile, cell_line)
+enhancers
+```
+
+The promoters:
+
+```{r splitPromoters}
+promoters <- split_by_quantiles(robust_promoters_regions, quantile, cell_line)
+promoters
+```
+
+## Save results:
+
+```{r save}
+save(enhancers, promoters, file = "splitted_regions.RData")
+```
