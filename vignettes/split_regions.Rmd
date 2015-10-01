@@ -26,7 +26,7 @@ value for each regions.
 
 ```{r robustEnhancerRegions}
 cell_line <- "GM12878"
-robust_enhancer_regions <- get_robust_enhancers_regions(cell_line,
+robust_enhancer_regions <- get_robust_enhancer_regions(cell_line,
                                                         keep_y = FALSE)
 robust_enhancer_regions
 ```
@@ -34,7 +34,7 @@ robust_enhancer_regions
 ### Robust promoter regions
 
 ```{r robustPromoterRegions}
-robust_promoter_regions <- get_robust_promoters_regions(cell_line,
+robust_promoter_regions <- get_robust_promoter_regions(cell_line,
                                                         keep_y = FALSE)
 robust_promoter_regions
 ```
@@ -65,7 +65,7 @@ enhancers
 The promoters:
 
 ```{r splitPromoters}
-promoters <- split_by_quantiles(robust_promoters_regions, quantile, cell_line)
+promoters <- split_by_quantiles(robust_promoter_regions, quantile, cell_line)
 promoters
 ```
 
