@@ -1,0 +1,108 @@
+---
+title: "Prepare bam files"
+author: "Charles Joly Beauparlant"
+date: "September 30, 2015"
+output: html_document
+---
+
+```{r devtools, warning=FALSE, message=FALSE}
+# TODO: Replace with library(metageneInputs) when available.
+library(devtools)
+devtools::load_all()
+```
+
+## Introduction
+
+The goals of this vignette are:
+
+* To prepare the `designs.RData` object (which contains `designs_encode` and
+`designs_validation`.
+* To produce the script (Makefile) for downloading all the bam files for the
+metagene paper.
+
+## ENCODE
+
+The main part of the analysis consists in producing the metagene objects for the
+ENCODE dataset for the GM12878 cell line. In order to do so, we must first fetch
+the names of the targets which have bam files available in ENCODE:
+
+```{r fetchTargets}
+targets <- get_encode_targets(cell_line)
+targets
+```
+
+We need to remove the histones:
+```{r removeHistones}
+i <- !grepl("H[0-9]K", targets)
+targets <- targets[i]
+targets
+```
+
+We need to remove the control:
+```{r removeControl}
+i <- targets != "Control" & targets != "mouse" & targets != "rabbit"
+targets <- targets[i]
+targets
+```
+
+We produce a design for each target:
+```{r produceDesigns, cache=TRUE}
+# We use the log hack to avoid all the outpus from the queryEncode function
+log <- capture.output({
+    designs_encode <- lapply(targets, get_encode_design, cell_line)
+})
+names(designs_encode) <- targets
+head(designs_encode)
+```
+
+## Validation
+
+The validation of the results will be performed on the
+["Variation and genetic control of chromatin architecture in humans"](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3657/files/)
+dataset.
+
+### Experiment descriptions
+
+Download the descriptions:
+
+```{r downloadDescriptions}
+file_descriptions <- "E-MTAB-3657.sdrf.txt"
+if (!file.exists(file_descriptions)) {
+    url <- "https://www.ebi.ac.uk/arrayexpress/files/E-MTAB-3657"
+    url <- paste(url, file_descriptions, sep = "/")
+    download.file(url, file_descriptions, method = "curl") # TODO: add to inst/extdata
+}
+```
+
+Load and clean the descriptions:
+
+```{r loadDescriptions}
+library(tidyr)
+library(dplyr)
+descriptions <- read.table(file_descriptions, header = TRUE, sep = "\t",
+                           stringsAsFactors = FALSE)
+to_keep <- c("Source.Name", "Comment..Derived.ArrayExpress.FTP.file.")
+descriptions <- descriptions[,colnames(descriptions) %in% to_keep]
+colnames(descriptions) <- c("individual_target", "url")
+descriptions <- tbl_df(descriptions) %>%
+                    separate(individual_target,
+                             into = c("individual", "target"), sep = "_") %>%
+                    filter(target %in% c("PU.1", "RPB2"))
+```
+
+Create the design:
+
+```{r designValidation}
+design_validation <- data.frame(bam_files = basename(descriptions$url))
+i <- descriptions[["target"]] == "PU.1"
+j <- descriptions[["target"]] == "RPB2"
+design_validation[["PU.1"]] <- 0
+design_validation[["RPB2"]] <- 0
+design_validation[["PU.1"]][i] <- 1
+design_validation[["RPB2"]][j] <- 1
+design_validation
+```
+
+```{r save}
+save(designs_encode, design_validation, file = "designs.RData")
+```

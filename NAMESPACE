@@ -2,9 +2,11 @@
 
 export(fetch_tpm)
 export(get_all_tss_tpm)
+export(get_encode_targets)
 export(get_robust_enhancer_regions)
 export(get_robust_promoter_regions)
 export(split_by_quantiles)
+import(ENCODExplorer)
 import(FantomEnhancers.hg19)
 import(FantomTSS.hg19)
 import(GenomeInfoDb)
