@@ -5,10 +5,11 @@ date: "September 29, 2015"
 output: html_document
 ---
 
-```{r devtools, warning=FALSE, message=FALSE}
+```{r devtools, message=FALSE}
 # TODO: Replace with library(metageneInputs) when available.
-library(devtools)
-devtools::load_all()
+#library(devtools)
+#devtools::load_all()
+library(metageneInputs)
 ```
 
 ## Introduction
@@ -73,4 +74,13 @@ promoters
 
 ```{r save}
 save(enhancers, promoters, file = "splitted_regions.RData")
+```
+
+## TPM `GRangesList`
+
+```{r tpmGRangesList}
+GenomicRanges::mcols(robust_promoter_regions)[["gene_id"]] <- NULL
+TPM <- GenomicRanges::GRangesList(enhancers = robust_enhancer_regions,
+                                  promoters = robust_promoter_regions)
+save(TPM, file = "tpm_grangeslist.RData")
 ```

@@ -5,10 +5,11 @@ date: "September 30, 2015"
 output: html_document
 ---
 
-```{r devtools, warning=FALSE, message=FALSE}
+```{r devtools, message=FALSE}
 # TODO: Replace with library(metageneInputs) when available.
-library(devtools)
-devtools::load_all()
+#library(devtools)
+#devtools::load_all()
+library(metageneInputs)
 ```
 
 ## Introduction
