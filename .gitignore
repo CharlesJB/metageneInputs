@@ -3,7 +3,6 @@
 .RData
 *.md
 *.html
-*.txt
 *.RData
 cache/*
 *.swp

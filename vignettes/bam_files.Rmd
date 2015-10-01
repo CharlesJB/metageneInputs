@@ -66,22 +66,13 @@ dataset.
 
 #### Experiment descriptions
 
-Download the descriptions:
-
-```{r downloadDescriptions}
-file_descriptions <- "E-MTAB-3657.sdrf.txt"
-if (!file.exists(file_descriptions)) {
-    url <- "https://www.ebi.ac.uk/arrayexpress/files/E-MTAB-3657"
-    url <- paste(url, file_descriptions, sep = "/")
-    download.file(url, file_descriptions, method = "curl") # TODO: add to inst/extdata
-}
-```
-
 Load and clean the descriptions:
 
 ```{r loadDescriptions}
 library(tidyr)
 library(dplyr)
+file_description <- system.file("E-MTAB-3657.sdrf.txt", 
+                                package = "metageneInputs")
 descriptions <- read.table(file_descriptions, header = TRUE, sep = "\t",
                            stringsAsFactors = FALSE)
 to_keep <- c("Source.Name", "Comment..Derived.ArrayExpress.FTP.file.")
