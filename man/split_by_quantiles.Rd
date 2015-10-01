@@ -9,11 +9,11 @@ split_by_quantiles(gr, quantiles, cell_line = NULL)
 \arguments{
 \item{gr}{The \code{GRanges} to extract quantile info from.}
 
+\item{quantiles}{The tresholds for the quantiles.}
+
 \item{cell_line}{The name of the column to use for splitting \code{gr}. If
                  \code{NULL}, the first metadata column is used. Default:
                  \code{NULL}.}
-
-\item{gr}{The tresholds for the quantiles.}
 }
 \value{
 A \code{GRangesList} of the original \code{GRanges} splitted into

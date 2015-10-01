@@ -8,6 +8,8 @@ get_encode_design(target, cell_line)
 }
 \arguments{
 \item{target}{The name of the target.}
+
+\item{cell_line}{Name of the cell line.}
 }
 \value{
 The design in \code{data.frame} format.

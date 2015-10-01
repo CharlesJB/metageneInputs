@@ -121,8 +121,8 @@ fetch_tpm <- function(region, cell_line) {
 #'
 #' @importFrom FantomTSS.hg19 get_fantom_library_name
 #' @importFrom FantomTSS.hg19 get_fantom_tss_tpm
+#' @importFrom IRanges IRanges
 #' @import S4Vectors
-#' @import IRanges
 #'
 #' @export
 get_all_tss_tpm <- function(cell_line = NULL, exclude = NULL) {
@@ -136,7 +136,7 @@ get_all_tss_tpm <- function(cell_line = NULL, exclude = NULL) {
   if (!is.null(exclude)) {
     stopifnot(is.character(exclude))
     stopifnot(length(exclude) == 1)
-    exclude <- FantomTSS::get_fantom_library_name(exclude)
+    exclude <- FantomTSS.hg19::get_fantom_library_name(exclude)
     i <- ! (colnames(fantom_tpm) %in% exclude)
     fantom_tpm <- fantom_tpm[,i]
   }
@@ -149,7 +149,7 @@ get_all_tss_tpm <- function(cell_line = NULL, exclude = NULL) {
 #' Split a GRanges into quantiles.
 #'
 #' @param gr The \code{GRanges} to extract quantile info from.
-#' @param gr The tresholds for the quantiles.
+#' @param quantiles The tresholds for the quantiles.
 #' @param cell_line The name of the column to use for splitting \code{gr}. If
 #'                  \code{NULL}, the first metadata column is used. Default:
 #'                  \code{NULL}.

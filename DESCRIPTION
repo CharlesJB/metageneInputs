@@ -1,5 +1,5 @@
 Package: metageneInputs
-Title: Create input files for metagene article.
+Title: Create input files for metagene article
 Version: 0.0.1
 Authors@R: person("Charles", "Joly Beauparlant",
     email = "charles.joly-beauparlant@crchul.ulaval.ca", role = c("aut", "cre"))
@@ -22,6 +22,8 @@ Imports:
     GenomicRanges,
     GenomeInfoDb,
     S4Vectors,
-    metagene
+    metagene,
+    ENCODExplorer,
+    IRanges
 Suggests:
     knitr

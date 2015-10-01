@@ -7,7 +7,7 @@
 #'
 #' @return A vector containing the names of the targets
 #'
-#' @import ENCODExplorer
+#' @importFrom ENCODExplorer queryEncode
 #'
 #' @export
 get_encode_targets <- function(cell_line) {
@@ -22,10 +22,11 @@ get_encode_targets <- function(cell_line) {
 #' Produce the design for a specific target
 #'
 #' @param target The name of the target.
+#' @param cell_line Name of the cell line.
 #'
 #' @return The design in \code{data.frame} format.
 #'
-#' @import ENCODExplorer
+#' @importFrom ENCODExplorer queryEncode
 #'
 #' @export
 get_encode_design <- function(target, cell_line) {
