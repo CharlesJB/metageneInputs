@@ -12,7 +12,7 @@
 #'
 #' @return A \code{GRanges} corresponding to the enhancers
 #'
-#' @import FantomEnhancers.hg19
+#' @importFrom FantomEnhancers.hg19 get_fantom_enhancers_tpm
 #' @import GenomeInfoDb
 #' @import GenomicRanges
 #'
@@ -54,7 +54,6 @@ get_robust_enhancer_regions <- function(cell_line, keep_y = TRUE) {
 #'
 #' @return A \code{GRanges} corresponding to the enhancers
 #'
-#' @import FantomEnhancers.hg19
 #' @import GenomeInfoDb
 #' @import GenomicRanges
 #' @import metagene
@@ -66,7 +65,7 @@ get_robust_promoter_regions <- function(cell_line, keep_y = TRUE) {
   stopifnot(is.logical(keep_y))
 
   # Prepare enhancers
-  data(promoters_hg19)
+  data(promoters_hg19, package = "metagene")
   promoters <- .clean_seqlevels(promoters_hg19, keep_y)
   fetch_tpm(promoters, cell_line)
 }
@@ -86,7 +85,7 @@ get_robust_promoter_regions <- function(cell_line, keep_y = TRUE) {
 #'         that overlaps at least on robust TSS with the mean robust TSS values
 #'         for each range.
 #'
-#' @import FantomTSS.hg19
+#' @importFrom FantomTSS.hg19 get_fantom_tss_tpm
 #' @import GenomicRanges
 #' @import S4Vectors
 #'
@@ -95,7 +94,7 @@ fetch_tpm <- function(region, cell_line) {
   # Prepare TSS
   fantom_tss <- FantomTSS.hg19::get_fantom_tss_tpm(cell_lines = cell_line,
                                                    merge.FUN = mean)
-  
+
   # Add TPM value
   expr <- GenomicRanges::mcols(fantom_tss)[[1]]
   GenomicRanges::mcols(region)[[cell_line]] <- 0
@@ -120,13 +119,15 @@ fetch_tpm <- function(region, cell_line) {
 #'
 #' @return A numeric vector of all the robut TSS from Fantom5
 #'
-#' @import FantomTSS.hg19
+#' @importFrom FantomTSS.hg19 get_fantom_library_name
+#' @importFrom FantomTSS.hg19 get_fantom_tss_tpm
 #' @import S4Vectors
 #' @import IRanges
 #'
 #' @export
 get_all_tss_tpm <- function(cell_line = NULL, exclude = NULL) {
-  fantom_tpm <- GenomicRanges::mcols(get_fantom_tss_tpm(cell_line))
+  fantom_tpm <-
+      GenomicRanges::mcols(FantomTSS.hg19::get_fantom_tss_tpm(cell_line))
   if (is.null(cell_line)) {
     fantom_tpm <- fantom_tpm[ grepl("CNhs", colnames(fantom_tpm))]
   } else {
@@ -135,7 +136,7 @@ get_all_tss_tpm <- function(cell_line = NULL, exclude = NULL) {
   if (!is.null(exclude)) {
     stopifnot(is.character(exclude))
     stopifnot(length(exclude) == 1)
-    exclude <- get_fantom_library_name(exclude)
+    exclude <- FantomTSS::get_fantom_library_name(exclude)
     i <- ! (colnames(fantom_tpm) %in% exclude)
     fantom_tpm <- fantom_tpm[,i]
   }
