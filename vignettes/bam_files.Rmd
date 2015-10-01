@@ -20,7 +20,9 @@ The goals of this vignette are:
 * To produce the script (Makefile) for downloading all the bam files for the
 metagene paper.
 
-## ENCODE
+## Designs
+
+### ENCODE
 
 The main part of the analysis consists in producing the metagene objects for the
 ENCODE dataset for the GM12878 cell line. In order to do so, we must first fetch
@@ -55,13 +57,13 @@ names(designs_encode) <- targets
 head(designs_encode)
 ```
 
-## Validation
+### Validation
 
 The validation of the results will be performed on the
 ["Variation and genetic control of chromatin architecture in humans"](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-3657/files/)
 dataset.
 
-### Experiment descriptions
+#### Experiment descriptions
 
 Download the descriptions:
 
@@ -103,6 +105,44 @@ design_validation[["RPB2"]][j] <- 1
 design_validation
 ```
 
+Save the results:
+
 ```{r save}
 save(designs_encode, design_validation, file = "designs.RData")
+```
+
+## Makefile
+
+We will now produce the Makefile to download the bam files.
+
+```{r}
+fileConn<-file("Makefile", open = "w")
+writeLines("# Targets", fileConn)
+close(fileConn)
+fileConn<-file("Makefile", open = "a")
+writeLines("## ENCODE's files", fileConn)
+bam_files <- unique(as.character(unlist(lapply(designs_encode,
+                                               `[[`, "bam_files"))))
+writeLines(paste0("TARGETS_ENCODE+=", bam_files), fileConn)
+writeLines("", fileConn)
+writeLines("## Validation's files", fileConn)
+bam_files <- as.character(design_validation[["bam_files"]])
+writeLines(paste0("TARGETS_VALIDATION+=", bam_files), fileConn)
+writeLines("", fileConn)
+writeLines("# URLs", fileConn)
+writeLines("URL_ENCODE=https://www.encodeproject.org/files", fileConn)
+writeLines("URL_VALIDATION=ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-3657",
+           fileConn)
+writeLines("", fileConn)
+writeLines("# Phony targets", fileConn)
+writeLines(".PHONY: all", fileConn)
+writeLines("all: $(TARGETS_ENCODE) $(TARGETS_VALIDATION)", fileConn)
+writeLines("", fileConn)
+writeLines("# Recipes", fileConn)
+writeLines("ENCFF%.bam:", fileConn)
+writeLines("\twget $(URL_ENCODE)/ENCFF$*/@@download/$@", fileConn)
+writeLines("", fileConn)
+writeLines("E-MTAB%.bam:", fileConn)
+writeLines("\twget $(URL_VALIDATION)/$@", fileConn)
+close(fileConn)
 ```
