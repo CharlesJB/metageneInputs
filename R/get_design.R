@@ -31,6 +31,7 @@ get_encode_targets <- function(cell_line) {
 #'
 #' @export
 get_encode_design <- function(target, cell_line) {
+    data(encode_df, package = "ENCODExplorer")
     chip <- ENCODExplorer::queryEncode(assay = "ChIP-seq",
                                        biosample = cell_line,
                                        file_format = "bam",
