@@ -1,8 +1,13 @@
 ---
 title: "Split regions"
+output:
+    BiocStyle::html_document:
+        toc: true
 author: "Charles Joly Beauparlant"
 date: "September 29, 2015"
-output: html_document
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+\usepackage[utf8]{inputenc}
 ---
 
 ```{r devtools, message=FALSE}

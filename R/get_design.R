@@ -7,10 +7,11 @@
 #'
 #' @return A vector containing the names of the targets
 #'
-#' @importFrom ENCODExplorer queryEncode
+#' @import ENCODExplorer
 #'
 #' @export
 get_encode_targets <- function(cell_line) {
+    data(encode_df, package = "ENCODExplorer")
     qry <- ENCODExplorer::queryEncode(assay = "ChIP-seq", biosample = cell_line,
                                       organism = "Homo sapiens",
                                       file_format = "bam")
@@ -26,7 +27,7 @@ get_encode_targets <- function(cell_line) {
 #'
 #' @return The design in \code{data.frame} format.
 #'
-#' @importFrom ENCODExplorer queryEncode
+#' @import ENCODExplorer
 #'
 #' @export
 get_encode_design <- function(target, cell_line) {

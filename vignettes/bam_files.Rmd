@@ -1,8 +1,13 @@
 ---
 title: "Prepare bam files"
+output:
+    BiocStyle::html_document:
+        toc: true
 author: "Charles Joly Beauparlant"
 date: "September 30, 2015"
-output: html_document
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+\usepackage[utf8]{inputenc}
 ---
 
 ```{r devtools, message=FALSE}
@@ -30,6 +35,7 @@ ENCODE dataset for the GM12878 cell line. In order to do so, we must first fetch
 the names of the targets which have bam files available in ENCODE:
 
 ```{r fetchTargets}
+cell_line <- "GM12878"
 targets <- get_encode_targets(cell_line)
 targets
 ```
@@ -71,7 +77,7 @@ Load and clean the descriptions:
 ```{r loadDescriptions}
 library(tidyr)
 library(dplyr)
-file_description <- system.file("E-MTAB-3657.sdrf.txt", 
+file_descriptions <- system.file("extdata/E-MTAB-3657.sdrf.txt",
                                 package = "metageneInputs")
 descriptions <- read.table(file_descriptions, header = TRUE, sep = "\t",
                            stringsAsFactors = FALSE)
