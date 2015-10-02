@@ -1,9 +1,10 @@
 .Rproj.user
 .Rhistory
 .RData
-*.md
 *.html
 *.RData
 cache/*
 *.swp
 Makefile
+bam_files.md
+split_regions.md
