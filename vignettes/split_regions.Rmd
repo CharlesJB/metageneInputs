@@ -11,9 +11,6 @@ vignette: >
 ---
 
 ```{r devtools, message=FALSE}
-# TODO: Replace with library(metageneInputs) when available.
-#library(devtools)
-#devtools::load_all()
 library(metageneInputs)
 ```
 
@@ -21,6 +18,13 @@ library(metageneInputs)
 
 The goal of this vignette is to produce the groups of regions that will be used
 for the metagene paper.
+
+All the files produced will be save inside a temporary directory and will need
+to be moved manually:
+```{r outputDir}
+outdir <- tempdir()
+outdir
+```
 
 ## Regions
 
@@ -78,7 +82,8 @@ promoters
 ## Save results:
 
 ```{r save}
-save(enhancers, promoters, file = "splitted_regions.RData")
+outfile <- paste0(outdir, "/splitted_regions.RData")
+save(enhancers, promoters, file = outfile)
 ```
 
 ## TPM `GRangesList`
@@ -87,5 +92,6 @@ save(enhancers, promoters, file = "splitted_regions.RData")
 GenomicRanges::mcols(robust_promoter_regions)[["gene_id"]] <- NULL
 TPM <- GenomicRanges::GRangesList(enhancers = robust_enhancer_regions,
                                   promoters = robust_promoter_regions)
-save(TPM, file = "tpm_grangeslist.RData")
+outfile <- paste0(outdir, "/tpm_grangeslist.RData")
+save(TPM, file = outfile)
 ```

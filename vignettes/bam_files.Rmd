@@ -11,9 +11,6 @@ vignette: >
 ---
 
 ```{r devtools, message=FALSE}
-# TODO: Replace with library(metageneInputs) when available.
-#library(devtools)
-#devtools::load_all()
 library(metageneInputs)
 ```
 
@@ -25,6 +22,13 @@ The goals of this vignette are:
 `designs_validation`.
 * To produce the script (Makefile) for downloading all the bam files for the
 metagene paper.
+
+All the files produced will be save inside a temporary directory and will need
+to be moved manually:
+```{r outputDir}
+outdir <- tempdir()
+outdir
+```
 
 ## Designs
 
@@ -106,7 +110,8 @@ design_validation
 Save the results:
 
 ```{r save}
-save(designs_encode, design_validation, file = "designs.RData")
+outfile <- paste0(outdir, "/designs.RData")
+save(designs_encode, design_validation, file = outfile)
 ```
 
 ## Makefile
@@ -114,10 +119,11 @@ save(designs_encode, design_validation, file = "designs.RData")
 We will now produce the Makefile to download the bam files.
 
 ```{r}
-fileConn<-file("Makefile", open = "w")
+outfile <- paste0(outdir, "/Makefile")
+fileConn<-file(outfile, open = "w")
 writeLines("# Targets", fileConn)
 close(fileConn)
-fileConn<-file("Makefile", open = "a")
+fileConn<-file(outfile, open = "a")
 writeLines("## ENCODE's files", fileConn)
 bam_files <- unique(as.character(unlist(lapply(designs_encode,
                                                `[[`, "bam_files"))))
