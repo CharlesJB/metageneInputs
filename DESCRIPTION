@@ -1,6 +1,6 @@
 Package: metageneInputs
 Title: Create input files for metagene article
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Charles", "Joly Beauparlant",
     email = "charles.joly-beauparlant@crchul.ulaval.ca", role = c("aut", "cre"))
 Description: The goal of this package is to create the groups of regions for a
