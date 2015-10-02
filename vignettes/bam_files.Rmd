@@ -28,7 +28,7 @@ metagene paper.
 All the files produced will be save inside a temporary directory and will need
 to be moved manually:
 ```{r outputDir}
-outdir <- basename(tempfile(""))
+outdir <- paste0(basename(tempfile("")))
 dir.create(outdir)
 outdir
 ```
