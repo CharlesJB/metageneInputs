@@ -6,6 +6,7 @@ output:
 author: "Charles Joly Beauparlant"
 date: "September 29, 2015"
 vignette: >
+  %\VignetteIndexEntry{Split regions.}
   %\VignetteEngine{knitr::rmarkdown}
 \usepackage[utf8]{inputenc}
 ---

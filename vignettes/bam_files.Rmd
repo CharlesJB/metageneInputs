@@ -6,6 +6,7 @@ output:
 author: "Charles Joly Beauparlant"
 date: "September 30, 2015"
 vignette: >
+  %\VignetteIndexEntry{Prepare bam files}
   %\VignetteEngine{knitr::rmarkdown}
 \usepackage[utf8]{inputenc}
 ---
