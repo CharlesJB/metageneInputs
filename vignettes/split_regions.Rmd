@@ -13,6 +13,7 @@ vignette: >
 
 ```{r devtools, message=FALSE}
 library(metageneInputs)
+library(ENCODExplorer)
 ```
 
 ## Introduction
@@ -24,6 +25,7 @@ All the files produced will be save inside a temporary directory and will need
 to be moved manually:
 ```{r outputDir}
 outdir <- tempdir()
+dir.create(outdir)
 outdir
 ```
 
