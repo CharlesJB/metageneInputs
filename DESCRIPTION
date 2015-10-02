@@ -15,8 +15,7 @@ Depends: R (>= 3.2.0)
 License: Artistic-2.0
 LazyData: true
 VignetteBuilder: knitr
-Depends:
-    FantomTSS.hg19
+Depends: FantomTSS.hg19 (>= 0.2.0)
 Imports:
     FantomEnhancers.hg19,
     GenomicRanges,
