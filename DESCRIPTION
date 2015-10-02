@@ -26,4 +26,6 @@ Imports:
     ENCODExplorer,
     IRanges
 Suggests:
-    knitr
+    knitr,
+    tidyr,
+    dplyr
