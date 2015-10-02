@@ -49,11 +49,11 @@ browseVignettes("metageneInputs")
 
 # Input files descriptions
 
-## `regions.RData`
+## `splitted_regions.RData`
 
 This object contains 2 `GRangesList`s: one for enhancers and one for promoters.
 Enhancers are regions are obtained with the `FantomEnhancers.hg19` package and
-promoters are obtained with the `TxDb.Hsapiens.UCSC.hg19.knownGene` package.
+promoters are obtained with the `metagene` package.
 
 Each element of the `GRangesList` correpond to an expression group in GM12878
 cell lines (based on Famtom5 datasets):
@@ -71,13 +71,31 @@ available cell lines except GM12878 and splitting them in quartiles. Regions
 from GM12878 cell lines are then splitted in each groups based on their TPM
 value.
 
-## `encode_url.csv`
+## `Makefile`
 
 We need to download ENCODE datasets from the GM12878 cell line (everything but
 histones). Using the `ENCODExplorer` package, we extract the URLs for every
-files.
+files and save them in a Makefile. We also saved the URL for the bam files to
+use for the validation in the same Makefile.
+
+To download the files, simply copy the Makefile in the directory where you want 
+to download the files and type in a shell:
+```shell
+make
+```
+
+This will download all the bam files required to reproduce the metagene analysis
+(~300G).
 
 ## `designs.RData`
 
-ENCODE experiments generally consists of at least 2 replicates and control
-files. We generate a design for each expe
+This objects contains 2 elements:
+* `designs_encode`: A list with the designs for every ENCODE experiments to be
+analyzed.
+* `design_validation`: The design for the validation.
+
+## `tpm_grangeslist`
+
+This file contains a `GRangesList` named `TPM` that consists of 2 `GRanges`, one
+for the promoters and one for the enhancers. Each `GRanges` contains the mean
+TPM value for each regions.
